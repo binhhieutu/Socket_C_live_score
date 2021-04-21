@@ -13,6 +13,7 @@ make sure to write my credits
 #include <Windows.h>
 #include<winsock2.h>
 #include<WS2tcpip.h>
+#include"databaseCLient.h"
 
 static SOCKET sArray[100];
 static int iCount;
@@ -137,7 +138,6 @@ void ServerManager::StartListening(int iPort)
         return;
     }
 }
-
 UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 {
 	SOCKET pYourSocket = reinterpret_cast<SOCKET>(pParam);
@@ -188,7 +188,7 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 					//}
 				}
 				else {
-					char* sever_rep = Stringtochar("Wrong user name or password\r\nPlease try again ");
+					char* sever_rep = Stringtochar("User Doesn't exists\r\nPlease try again ");
 					send(pYourSocket, sever_rep, strlen(sever_rep), 0);
 					delete[] sever_rep;
 				}
