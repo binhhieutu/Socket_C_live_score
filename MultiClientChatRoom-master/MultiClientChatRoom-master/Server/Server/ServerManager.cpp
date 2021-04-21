@@ -137,23 +137,61 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 
 
 	char *message;
-	message = "Welcome to Matrix chat room.\r\n";
-    send(pYourSocket , message , strlen(message) , 0);
+//	message = "Welcome to Matrix chat room.\r\n";
+//  send(pYourSocket , message , strlen(message) , 0);
 	char server_reply[2000];
     int recv_size;
 
 	while((recv_size = recv(pYourSocket , server_reply , 2000 , 0)) != SOCKET_ERROR)
 	{
 		server_reply[recv_size] = '\0';
+		string temp;
+		for (int i = 0; i < 4; i++)
+			temp += server_reply[i];
+		if (temp == "LGIN"|| temp == "REGS" )
+		{	
+			string user = "",pass = "";
+			for (int i = 4; server_reply[i] != '.'; i++)
+				user += server_reply[i];
+
+			for (int i = user.size()+5; server_reply[i] != '\0'; i++)
+				pass += server_reply[i]; 
+
+			if (temp == "LGIN") {
+			//bool flag = check_user_exists();
+			//if(flag)
+			//  if(check_password) ;
+			}
+			else
+				if (temp == "REGS") {
+				//check_user_exists();
+				// inset_table_user();
+				}
+		}
+		else
+		{
+			if (temp == "LIST")
+			{
+				//vector match(select_match());
+
+			}
+			else
+			if (temp == "DETL") {
+				/*select_Match_ID(string ID);
+				for (int i = 0; i < vector....)
+					senddatatoclient();*/
+			}
+		}
+
 		//m_pDialog->ShowServerInfo("Message Received: "+ string(server_reply));
 		/*for(int i = 1;i<=iCount; i++)
-		{*/
+		{
 			if( send(pYourSocket, server_reply, recv_size , 0) < 0)
 			{
 				puts("Send failed");
 				//return -1;
 			}
-		/*}*/
+		}*/
 
 	}
     return 0;
@@ -161,7 +199,8 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 
 UINT ServerManager::SendReceiveData(SOCKET cSocket)
 {
-
+	//std::vector<char> cstr(mess.c_str(), mess.c_str() + mess.size() + 1);
+	//send(cSocket, server_reply, recv_size, 0)
 	return 0;
 }
 

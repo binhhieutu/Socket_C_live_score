@@ -57,4 +57,6 @@ private:
 public:
 	CEdit m_Textbox;
 	afx_msg void OnBnClickedButton3();
+	afx_msg void OnEnChangeEdit6();
+	afx_msg void OnEnChangeEdit8();
 };

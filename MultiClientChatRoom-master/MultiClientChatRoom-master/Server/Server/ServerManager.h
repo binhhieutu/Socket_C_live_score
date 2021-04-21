@@ -8,7 +8,9 @@ make sure to write my credits
 #pragma once
 
 #include<winsock2.h>
-
+#include<vector>
+#include <string>
+#include <string.h>
 class CServerDlg;
  
 #pragma comment(lib,"ws2_32.lib")

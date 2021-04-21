@@ -27,7 +27,7 @@ ClientCon::~ClientCon(void)
 	WSACleanup();
 }
 
-void ClientCon::StartConnect(string sAddress, int iPort, string sUsername)
+void ClientCon::StartConnect(string sAddress, int iPort, string sUsername,string password)
 {
     struct sockaddr_in server;
     char *message , server_reply[2000];
@@ -61,10 +61,9 @@ void ClientCon::StartConnect(string sAddress, int iPort, string sUsername)
     {
         puts("connect error");
         return;
-    }
+    }     
      
     puts("Connected");
-     
     //Send some data
     //message = "GET / HTTP/1.1\r\n\r\n";
    /*
@@ -72,6 +71,7 @@ void ClientCon::StartConnect(string sAddress, int iPort, string sUsername)
     puts("Data Send\n");
      */
     //Receive a reply from the server
+    Send_user_password_login(sUsername, password);
     while((recv_size = recv(s , server_reply , 2000 , 0)) != SOCKET_ERROR)
     { 
 		puts("Reply received\n");
@@ -80,7 +80,7 @@ void ClientCon::StartConnect(string sAddress, int iPort, string sUsername)
 		server_reply[recv_size] = '\0';
 		puts(server_reply);
 
-		string sTempMsg ="\n"+string(server_reply)+"\n";
+		string sTempMsg =string(server_reply)+"\r\n";
 		m_pClient->ShowServerInfo(sTempMsg);
     }
     
@@ -88,11 +88,17 @@ void ClientCon::StartConnect(string sAddress, int iPort, string sUsername)
 
 void ClientCon::SendData(string sMessage)
 {
-	string sTemp = m_pUser +">>"+ sMessage+"\n";
+	string sTemp = sMessage;
 
 	if( send(s , sTemp.c_str(), sTemp.size() , 0) < 0)
     {
         puts("Send failed");
         return;
     }
+}
+
+void ClientCon::Send_user_password_login(string user, string pass)
+{
+    string tmp = "LGIN" + user + "." + pass;
+    SendData(tmp);
 }

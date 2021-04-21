@@ -78,6 +78,8 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CClientDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON4, &CClientDlg::OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_BUTTON3, &CClientDlg::OnBnClickedButton3)
+	ON_EN_CHANGE(IDC_EDIT6, &CClientDlg::OnEnChangeEdit6)
+	ON_EN_CHANGE(IDC_EDIT8, &CClientDlg::OnEnChangeEdit8)
 END_MESSAGE_MAP()
 
 
@@ -246,6 +248,10 @@ UINT CClientDlg::ThreadFunc()
 	CString username;
 	GetDlgItemText(IDC_EDIT6, username);
 
+	CString password;
+	GetDlgItemText(IDC_EDIT8, password);
+
+
 	m_pClient = new ClientCon(this);
 
 	CT2CA CStringToAscii(txtname);
@@ -257,7 +263,10 @@ UINT CClientDlg::ThreadFunc()
 
 	std::string sResultedString2 (CStringToAscii2);
 
-	m_pClient->StartConnect(sResultedString, iPort, sResultedString2);
+	CT2CA CStringToAscii3(password);
+	std::string sResultedpass(CStringToAscii3);
+
+	m_pClient->StartConnect(sResultedString, iPort, sResultedString2,sResultedpass);
 	return 0;
 }
 
@@ -268,4 +277,26 @@ void CClientDlg::OnBnClickedButton3()
 	
 	ShowServerInfo(m_pClient->m_pUser+ " is logged out\n");
 	delete m_pClient;
+}
+
+
+void CClientDlg::OnEnChangeEdit6()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+}
+
+
+void CClientDlg::OnEnChangeEdit8()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
 }
