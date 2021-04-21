@@ -109,6 +109,7 @@ void ServerManager::StartListening(int iPort)
 
 		printf("Peer IP address: %s\n", ipstr);
 		m_pDialog->ShowServerInfo("Connected Peer IP address: "+string(ipstr)+"\r\n");
+
 		CWinThread *cTh = AfxBeginThread(
 		DataThreadFunc,
 		(LPVOID)new_socket);
@@ -158,6 +159,9 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 				pass += server_reply[i]; 
 
 			if (temp == "LGIN") {
+
+
+
 			//bool flag = check_user_exists();
 			//if(flag)
 			//  if(check_password) ;
