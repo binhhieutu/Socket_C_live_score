@@ -170,6 +170,10 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 				/*bool flag = check_user_exists();*/
 				if (0) {
 					//if (check_password) {
+					// 
+					/*char* sever_rep = Stringtochar("Login Successfully !!");
+					send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+					delete[] sever_rep;*/
 					//	if (temp == "LIST")
 					//	{
 					//		//vector match(select_match());
