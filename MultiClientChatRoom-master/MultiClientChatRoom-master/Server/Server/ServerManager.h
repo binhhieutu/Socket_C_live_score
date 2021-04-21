@@ -39,3 +39,5 @@ public:
 	static void SetStaticVariable(int iC, SOCKET cS);
 };
 
+
+

@@ -12,7 +12,6 @@ make sure to write my credits
 #pragma once
 #include "ServerManager.h"
 #include <Windows.h>
-
 // CServerDlg dialog
 class CServerDlg : public CDialogEx
 {

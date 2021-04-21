@@ -13,6 +13,7 @@ make sure to write my credits
 #include <stdlib.h>
 #include "ServerDlg.h"
 #include "afxdialogex.h"
+
 //#include <pthread.h>
 
 #ifdef _DEBUG

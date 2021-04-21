@@ -13,9 +13,19 @@ make sure to write my credits
 #include <Windows.h>
 #include<winsock2.h>
 #include<WS2tcpip.h>
+#include"databaseCLient.h"
 
 static SOCKET sArray[100];
 static int iCount;
+char* Stringtochar(string str)
+{
+
+	//std::string str = "string";
+	char* cstr = new char[str.length() + 1];
+	strcpy(cstr, str.c_str());
+	// do stuff
+	return cstr;
+}
 ServerManager::ServerManager(CServerDlg* dialog)
 {
 	m_pDialog = dialog;
@@ -129,7 +139,6 @@ void ServerManager::StartListening(int iPort)
         return;
     }
 }
-
 UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 {
 	SOCKET pYourSocket = reinterpret_cast<SOCKET>(pParam);
@@ -159,12 +168,31 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 				pass += server_reply[i]; 
 
 			if (temp == "LGIN") {
+				/*bool flag = check_user_exists();*/
+				if (0) {
+					//if (check_password) {
+					// 
+					/*char* sever_rep = Stringtochar("Login Successfully !!");
+					send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+					delete[] sever_rep;*/
+					//	if (temp == "LIST")
+					//	{
+					//		//vector match(select_match());
 
-
-
-			//bool flag = check_user_exists();
-			//if(flag)
-			//  if(check_password) ;
+					//	}
+					//	else
+					//		if (temp == "DETL") {
+					//			/*select_Match_ID(string ID);
+					//			for (int i = 0; i < vector....)
+					//				senddatatoclient();*/
+					//		}
+					//}
+				}
+				else {
+					char* sever_rep = Stringtochar("User Doesn't exists\r\nPlease try again ");
+					send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+					delete[] sever_rep;
+				}
 			}
 			else
 				if (temp == "REGS") {
@@ -172,31 +200,15 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 				// inset_table_user();
 				}
 		}
-		else
-		{
-			if (temp == "LIST")
-			{
-				//vector match(select_match());
+		
 
-			}
-			else
-			if (temp == "DETL") {
-				/*select_Match_ID(string ID);
-				for (int i = 0; i < vector....)
-					senddatatoclient();*/
-			}
-		}
 
-		//m_pDialog->ShowServerInfo("Message Received: "+ string(server_reply));
-		/*for(int i = 1;i<=iCount; i++)
-		{
-			if( send(pYourSocket, server_reply, recv_size , 0) < 0)
-			{
-				puts("Send failed");
-				//return -1;
-			}
-		}*/
-
+			//if( send(pYourSocket, server_reply, recv_size , 0) < 0)
+			//{
+			//	puts("Send failed");
+			//	
+			//	//return -1;
+			//}
 	}
     return 0;
 }
@@ -213,3 +225,6 @@ void ServerManager::SetStaticVariable(int iC, SOCKET cS)
 	iCount = iC;
 	sArray[iCount] = cS;
 }
+
+
+
