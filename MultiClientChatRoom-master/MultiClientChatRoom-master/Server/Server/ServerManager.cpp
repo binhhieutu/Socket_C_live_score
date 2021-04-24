@@ -14,9 +14,10 @@ make sure to write my credits
 #include<winsock2.h>
 #include<WS2tcpip.h>
 #include"databaseClient.h"
-
-static SOCKET sArray[100];
-static int iCount;
+#include"databaseMatch.h"
+#include <vector>
+SOCKET ServerManager::sArray[];
+int ServerManager::iCount;
 char* Stringtochar(string str)
 {
 
@@ -41,6 +42,8 @@ ServerManager::~ServerManager()
 
 void ServerManager::ClearServer()
 {
+	if (iCount <= 0)
+		return;
 	closesocket(s);
     WSACleanup();
 
@@ -56,6 +59,13 @@ void ServerManager::ClearServer()
 
 void ServerManager::StartListening(int iPort)
 {
+	
+    CString num;
+	m_pDialog->GetDlgItemText(IDC_NUM_CLIENT, num);
+	int tmp = _wtoi(num.GetString());
+	if (tmp != 0)
+		this->NumberofClient = tmp;
+
 	iCount=0;
 	printf("\nInitialising Winsock...");
     if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
@@ -72,7 +82,9 @@ void ServerManager::StartListening(int iPort)
         printf("Could not create socket : %d" , WSAGetLastError());
 		m_pDialog->ShowServerInfo("Could not create socket");
     }
-	selectData(url);
+	//selectData(url);
+	selectData2(url2);
+	//selectData(url);
     printf("Socket created.\n");
      
     //Prepare the sockaddr_in structure
@@ -86,6 +98,7 @@ void ServerManager::StartListening(int iPort)
         printf("Bind failed with error code : %d" , WSAGetLastError());
 		m_pDialog->ShowServerInfo("Bind failed with error code");
         exit(EXIT_FAILURE);
+		
     }
      
     puts("Bind done");
@@ -97,8 +110,12 @@ void ServerManager::StartListening(int iPort)
      m_pDialog->ShowServerInfo("Waiting for incoming connections...\r\n");
      c = sizeof(struct sockaddr_in);
      
-    while( (new_socket = accept(s , (struct sockaddr *)&client, &c)) != INVALID_SOCKET )
-    {
+	 while ((new_socket = accept(s, (struct sockaddr*)&client, &c)) != INVALID_SOCKET)
+	 {
+		 if (iCount >= this->NumberofClient) {
+			 m_pDialog->ShowServerInfo("So many connection, new connection won't be allowed !\r\n");
+			 continue; 
+		 }
         puts("Connection accepted");
        // m_pDialog->ShowServerInfo("Connection accepted\n");
         //Reply to the client
@@ -119,15 +136,18 @@ void ServerManager::StartListening(int iPort)
 
 		printf("Peer IP address: %s\n", ipstr);
 		m_pDialog->ShowServerInfo("Connected Peer IP address: "+string(ipstr)+"\r\n");
+		string tmp = "Slot :" + to_string(iCount +1) + "\\" + to_string(this->NumberofClient) + "\r\n";
+		m_pDialog->ShowServerInfo(tmp);
 		CWinThread *cTh = AfxBeginThread(
 		DataThreadFunc,
 		(LPVOID)new_socket);
 		++iCount;
+		this->NUM_REAL = iCount;
 		//m_Thread_handle[++iCount] = cTh->m_hThread;
 		//cpTh[iCount] = cTh;
 		sArray[iCount] = new_socket;
-		//message = "Hello Client , I have received your connection.\n";
-        //send(new_socket , message , strlen(message) , 0);
+		message = "Connect successfully";
+        send(new_socket , message , strlen(message) , 0);
 
 		//SetStaticVariable(iTempCount, new_socket);
     }
@@ -169,18 +189,13 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 
 			for (int i = user.size()+5; server_reply[i] != '\0'; i++)
 				pass += server_reply[i]; 
-
+			bool flag = check_user_exists(user);
 			if (temp == "LGIN" ){
-				bool flag = check_user_exists(user);
 				if (flag) {
 					if (check_password(pass)) {
 					char* sever_rep = Stringtochar("Login Successfully !!");
 					send(pYourSocket, sever_rep, strlen(sever_rep), 0);
 					delete[] sever_rep;
-					//	if (temp == "LIST")
-					//	{
-					//		//vector match(select_match());
-
 					//	}
 					//	else
 					//		if (temp == "DETL") {
@@ -188,6 +203,12 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 					//			for (int i = 0; i < vector....)
 					//				senddatatoclient();*/
 					//		}
+					}
+					else
+					{
+						char* sever_rep = Stringtochar("Wrong password !!!\r\nPlease  try again ");
+						send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+						delete[] sever_rep;
 					}
 				}
 				else {
@@ -198,12 +219,58 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 			}
 			else
 				if (temp == "REGS") {
-				//check_user_exists();
+					if (!flag)
+					{
+						insertData_Client(url,user,pass);
+						char* sever_rep = Stringtochar("Register Successfully !!");
+						send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+						delete[] sever_rep;
+					}
+					else
+					{
+						char* sever_rep = Stringtochar("User already exists\r\nPlease try again ");
+						send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+						delete[] sever_rep;
+					}
 				// inset_table_user();
 				}
 		}
-		
+		else
+		if (temp == "LTAL")
+		{
+			char* sever_rep = Stringtochar("ID  TIME          Team 1     Score    Team 2 \r\n");
+			send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+			delete[] sever_rep;
+			for (int i = 0; i < Matchs.size(); i++) {
+				//string infoMatch = Matchs[i].id + " " + Matchs[i].time + " " + Matchs[i].teamA + " " + Matchs[i].scoreA + " " + Matchs[i].teamA + " " + Matchs[i].scoreA + " " + Matchs[i].scoreB + " " + Matchs[i].teamB+"\r\n";
+				string infoMatch = Matchs[i].tostring();
+				char* S = new char[infoMatch.length() + 1];
+				strcpy(S, infoMatch.c_str());
+				send(pYourSocket, S, strlen(S), 0);
+				delete[]S;
+			}
+		}
+		else
+		if (temp == "LTID")
+		{
+			string ID = "";
+			for (int i =4; server_reply[i] != '\0'; i++)
+				ID+= server_reply[i];
+			
+			ID = info(ID);
+			char* K = new char[ID.length() + 1];
+			strcpy(K, ID.c_str());
+			send(pYourSocket, K, strlen(K), 0);
+			delete[]K;
 
+		}
+		else
+			if (temp == "DISC") {
+				char* sever_rep = Stringtochar("Thank you for using our app, see you later");
+				send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+				delete[] sever_rep;
+				closesocket(pYourSocket);
+			}
 
 			//if( send(pYourSocket, server_reply, recv_size , 0) < 0)
 			//{

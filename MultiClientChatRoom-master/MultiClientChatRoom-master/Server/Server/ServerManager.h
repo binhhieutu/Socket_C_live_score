@@ -18,6 +18,8 @@ class CServerDlg;
 class ServerManager
 {
 public:
+	static int iCount;
+	static SOCKET sArray[1000];
 	ServerManager(CServerDlg* dialog);
 	~ServerManager(void);
 
@@ -37,6 +39,9 @@ public:
 	HANDLE m_Thread_handle[100];
 	CWinThread *cpTh[100];
 	static void SetStaticVariable(int iC, SOCKET cS);
+
+	int NumberofClient = 100;
+	int NUM_REAL = 0;
 };
 
 

@@ -64,14 +64,8 @@ void ClientCon::StartConnect(string sAddress, int iPort, string sUsername,string
     }     
      
     puts("Connected");
-    //Send some data
-    //message = "GET / HTTP/1.1\r\n\r\n";
-   /*
-	
-    puts("Data Send\n");
-     */
     //Receive a reply from the server
-    Send_user_password_login(sUsername, password);
+   
     while((recv_size = recv(s , server_reply , 2000 , 0)) != SOCKET_ERROR)
     { 
 		puts("Reply received\n");
@@ -81,6 +75,13 @@ void ClientCon::StartConnect(string sAddress, int iPort, string sUsername,string
 		puts(server_reply);
 
 		string sTempMsg =string(server_reply)+"\r\n";
+        if (sTempMsg == "Login Successfully !!\r\n") {
+            this->m_login = true;
+            m_pClient->GetDlgItem(IDC_LIST_ID)->EnableWindow(true);
+            m_pClient->GetDlgItem(IDC_LISTALL)->EnableWindow(true);
+            m_pClient->GetDlgItem(IDC_BUTTON_login)->EnableWindow(false);
+            m_pClient->GetDlgItem(IDC_BUTTON_Register)->EnableWindow(false);
+        }
 		m_pClient->ShowServerInfo(sTempMsg);
     }
     
@@ -100,5 +101,11 @@ void ClientCon::SendData(string sMessage)
 void ClientCon::Send_user_password_login(string user, string pass)
 {
     string tmp = "LGIN" + user + "." + pass;
+    SendData(tmp);
+}
+
+void ClientCon::Send_user_password_REGISTER(string user, string pass)
+{
+    string tmp = "REGS" + user + "." + pass;
     SendData(tmp);
 }
