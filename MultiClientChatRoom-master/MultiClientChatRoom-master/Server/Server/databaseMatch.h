@@ -113,4 +113,28 @@ static int selectData2(const char* s) {
 	sqlite3_exec(DB, sql.c_str(), callback2, NULL, NULL);
 	return 0;
 }
+string info(string s) {
+	string KQ;
+	if (s == "2") {
+		 KQ = "18' Jamie Hollyword  1 - 0 \r\n";
+		KQ += "23' Shane Barnes     1 - 1 \r\n";
+		KQ += "56' Darwin Nunez     1 - 2 \r\n";
+		KQ += "78' Haris Seferovic  1 - 3 \r\n";
+		KQ += "89' Nicolas Otamendi	1 - 4 \r\n";
+	}
+	else if (s == "1") {
+		 KQ = "Referee: John Brooks (England) \r\n";
+		KQ += "Venue: Vitality Stadium \r\n";
+	}
+	else if (s == "3") {
+		 KQ = "45' Darwin Nunez     1 - 0 \r\n";
+		KQ += "61' Lorenzo Insigne  1 - 1 \r\n";
+		
+	}
+	else if (s == "4") {
+		 KQ = "37' Tariqe Fosu      0 - 1 \r\n";
+		
+	}
+	return KQ;
+}
 #endif // !_DATABASE_H_

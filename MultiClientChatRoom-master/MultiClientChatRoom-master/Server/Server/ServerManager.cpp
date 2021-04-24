@@ -239,7 +239,12 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 			string ID = "";
 			for (int i =4; server_reply[i] != '\0'; i++)
 				ID+= server_reply[i];
-
+			
+			ID = info(ID);
+			char* K = new char[ID.length() + 1];
+			strcpy(K, ID.c_str());
+			send(pYourSocket, K, strlen(K), 0);
+			delete[]K;
 
 		}
 
