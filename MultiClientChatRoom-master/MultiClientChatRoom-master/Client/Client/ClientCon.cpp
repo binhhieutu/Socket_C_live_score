@@ -81,6 +81,13 @@ void ClientCon::StartConnect(string sAddress, int iPort, string sUsername,string
 		puts(server_reply);
 
 		string sTempMsg =string(server_reply)+"\r\n";
+        if (sTempMsg == "Login Successfully !!\r\n") {
+            this->m_login = true;
+            m_pClient->GetDlgItem(IDC_LIST_ID)->EnableWindow(true);
+            m_pClient->GetDlgItem(IDC_LISTALL)->EnableWindow(true);
+            m_pClient->GetDlgItem(IDC_BUTTON_login)->EnableWindow(false);
+            m_pClient->GetDlgItem(IDC_BUTTON_Register)->EnableWindow(false);
+        }
 		m_pClient->ShowServerInfo(sTempMsg);
     }
     

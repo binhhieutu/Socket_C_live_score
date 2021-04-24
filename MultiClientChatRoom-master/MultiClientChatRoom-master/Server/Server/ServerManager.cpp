@@ -72,7 +72,7 @@ void ServerManager::StartListening(int iPort)
         printf("Could not create socket : %d" , WSAGetLastError());
 		m_pDialog->ShowServerInfo("Could not create socket");
     }
-	selectData(url);
+	//selectData(url);
 	selectData2(url2);
 	//selectData(url);
     printf("Socket created.\n");
@@ -129,8 +129,8 @@ void ServerManager::StartListening(int iPort)
 		//m_Thread_handle[++iCount] = cTh->m_hThread;
 		//cpTh[iCount] = cTh;
 		sArray[iCount] = new_socket;
-		//message = "Hello Client , I have received your connection.\n";
-        //send(new_socket , message , strlen(message) , 0);
+		message = "Connect successfully";
+        send(new_socket , message , strlen(message) , 0);
 
 		//SetStaticVariable(iTempCount, new_socket);
     }
@@ -179,19 +179,6 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 					char* sever_rep = Stringtochar("Login Successfully !!");
 					send(pYourSocket, sever_rep, strlen(sever_rep), 0);
 					delete[] sever_rep;
-					for (int i = 0; i < Matchs.size(); i++) {
-						string infoMatch = Matchs[i].id + " " + Matchs[i].time + " " + Matchs[i].teamA + " " + Matchs[i].scoreA + " " + Matchs[i].teamA + " " + Matchs[i].scoreA + " " + Matchs[i].scoreB + " " + Matchs[i].teamB+"\r\n";
-						char* S = new char[infoMatch.length() + 1];
-						strcpy(S, infoMatch.c_str());
-						send(pYourSocket, S, strlen(S), 0);
-						delete[]S;
-					}
-
-					
-					//	if (temp == "LIST")
-					//	{
-					//		//vector match(select_match());
-
 					//	}
 					//	else
 					//		if (temp == "DETL") {
@@ -231,7 +218,30 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 				// inset_table_user();
 				}
 		}
-		
+		else
+		if (temp == "LTAL")
+		{
+			char* sever_rep = Stringtochar("ID  TIME          Team 1     Score    Team 2 \r\n");
+			send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+			delete[] sever_rep;
+			for (int i = 0; i < Matchs.size(); i++) {
+				//string infoMatch = Matchs[i].id + " " + Matchs[i].time + " " + Matchs[i].teamA + " " + Matchs[i].scoreA + " " + Matchs[i].teamA + " " + Matchs[i].scoreA + " " + Matchs[i].scoreB + " " + Matchs[i].teamB+"\r\n";
+				string infoMatch = Matchs[i].tostring();
+				char* S = new char[infoMatch.length() + 1];
+				strcpy(S, infoMatch.c_str());
+				send(pYourSocket, S, strlen(S), 0);
+				delete[]S;
+			}
+		}
+		else
+		if (temp == "LTID")
+		{
+			string ID = "";
+			for (int i =4; server_reply[i] != '\0'; i++)
+				ID+= server_reply[i];
+
+
+		}
 
 
 			//if( send(pYourSocket, server_reply, recv_size , 0) < 0)

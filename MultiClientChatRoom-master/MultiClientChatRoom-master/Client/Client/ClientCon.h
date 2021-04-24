@@ -26,6 +26,7 @@ public:
     SOCKET s;
 	CClientDlg *m_pClient;
 	string m_pUser;
+	bool m_login = false;
 
 };
 

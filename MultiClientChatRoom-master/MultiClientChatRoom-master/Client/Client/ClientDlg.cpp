@@ -85,6 +85,11 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT8, &CClientDlg::OnEnChangeEdit8)
 	ON_BN_CLICKED(IDC_BUTTON_Register, &CClientDlg::OnBnClickedButtonRegister)
 	ON_BN_CLICKED(IDC_BUTTON_login, &CClientDlg::OnBnClickedButtonlogin)
+	ON_EN_CHANGE(IDC_EDIT1, &CClientDlg::OnEnChangeEdit1)
+	//ON_BN_CLICKED(IDC_BUTTON1, &CClientDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_LISTALL, &CClientDlg::OnBnClickedListall)
+	ON_BN_CLICKED(IDC_LIST_ID, &CClientDlg::OnBnClickedListId)
+	//ON_EN_CHANGE(IDC_EDIT4, &CClientDlg::OnEnChangeEdit4)
 END_MESSAGE_MAP()
 
 
@@ -188,6 +193,8 @@ void CClientDlg::OnBnClickedButton2()
 	
 	//cTh->m_bAutoDelete = FALSE;
 	m_Thread_handle = cTh->m_hThread;
+	
+	GetDlgItem(IDC_BUTTON2)->EnableWindow(false);
 }
 
 
@@ -283,6 +290,13 @@ void CClientDlg::OnBnClickedButton3()
 	std::string sResultedString2(CStringToAscii2);
 	m_pClient->m_pUser = sResultedString2;
 	ShowServerInfo(m_pClient->m_pUser+ " is logged out\r\n");
+	m_pClient->m_login = false;
+
+	GetDlgItem(IDC_BUTTON2)->EnableWindow(true);
+	GetDlgItem(IDC_LIST_ID)->EnableWindow(false);
+	GetDlgItem(IDC_LISTALL)->EnableWindow(false);
+	GetDlgItem(IDC_BUTTON_login)->EnableWindow(true);
+	GetDlgItem(IDC_BUTTON_Register)->EnableWindow(true);
 	delete m_pClient;
 }
 
@@ -353,4 +367,49 @@ void CClientDlg::OnBnClickedButtonlogin()
 	std::string sResultedpass(CStringToAscii3);
 	if (m_pClient != NULL)
 		m_pClient->Send_user_password_login(sResultedString2, sResultedpass);
+}
+
+
+void CClientDlg::OnEnChangeEdit1()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+}
+
+
+void CClientDlg::OnBnClickedButton1()
+{
+	// TODO: Add your control notification handler code here
+}
+
+
+void CClientDlg::OnBnClickedListall()
+{
+	m_pClient->SendData("LTAL");
+}
+
+
+void CClientDlg::OnBnClickedListId()
+{
+	CString ID;
+	GetDlgItemText(IDC_EDIT4, ID);
+	CT2CA CStringToAscii3(ID);
+	std::string SID(CStringToAscii3);
+	string tmp = "LTID" + SID;
+	m_pClient->SendData(tmp);
+}
+
+
+void CClientDlg::OnEnChangeEdit4()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
 }

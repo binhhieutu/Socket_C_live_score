@@ -8,6 +8,10 @@ using namespace std;
 struct match {
 
 	string id, time, teamA, scoreA, scoreB, teamB;
+	string tostring() {
+		string infoMatch = id + "   " +time + "             " + teamA + "   " + scoreA + "-" + scoreB + "   " + teamB + "\r\n";
+		return infoMatch;
+	}
 };
 vector<match> Matchs;
 const char* url2 = "matchData.db";
