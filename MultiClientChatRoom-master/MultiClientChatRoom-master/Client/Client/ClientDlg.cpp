@@ -290,7 +290,6 @@ void CClientDlg::OnBnClickedButton3()
 	CT2CA CStringToAscii2(username);
 	std::string sResultedString2(CStringToAscii2);
 	m_pClient->m_pUser = sResultedString2;
-	ShowServerInfo(m_pClient->m_pUser+ " is logged out\r\n");
 	m_pClient->m_login = false;
 
 	GetDlgItem(IDC_BUTTON2)->EnableWindow(true);
@@ -298,6 +297,9 @@ void CClientDlg::OnBnClickedButton3()
 	GetDlgItem(IDC_LISTALL)->EnableWindow(false);
 	GetDlgItem(IDC_BUTTON_login)->EnableWindow(true);
 	GetDlgItem(IDC_BUTTON_Register)->EnableWindow(true);
+
+	m_pClient->SendData("DISC");
+	ShowServerInfo(m_pClient->m_pUser + " is logged out\r\n");
 	delete m_pClient;
 }
 

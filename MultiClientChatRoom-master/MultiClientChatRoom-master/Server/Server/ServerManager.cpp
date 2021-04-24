@@ -17,7 +17,7 @@ make sure to write my credits
 #include"databaseMatch.h"
 #include <vector>
 SOCKET ServerManager::sArray[];
-static int iCount=0;
+int ServerManager::iCount;
 char* Stringtochar(string str)
 {
 
@@ -136,7 +136,7 @@ void ServerManager::StartListening(int iPort)
 
 		printf("Peer IP address: %s\n", ipstr);
 		m_pDialog->ShowServerInfo("Connected Peer IP address: "+string(ipstr)+"\r\n");
-		string tmp = "Slot :" + to_string(iCount+1) + "\\" + to_string(this->NumberofClient) + "\r\n";
+		string tmp = "Slot :" + to_string(iCount +1) + "\\" + to_string(this->NumberofClient) + "\r\n";
 		m_pDialog->ShowServerInfo(tmp);
 		CWinThread *cTh = AfxBeginThread(
 		DataThreadFunc,
@@ -264,7 +264,13 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 			delete[]K;
 
 		}
-
+		else
+			if (temp == "DISC") {
+				char* sever_rep = Stringtochar("Thank you for using our app, see you later");
+				send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+				delete[] sever_rep;
+				closesocket(pYourSocket);
+			}
 
 			//if( send(pYourSocket, server_reply, recv_size , 0) < 0)
 			//{

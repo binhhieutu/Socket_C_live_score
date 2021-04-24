@@ -226,6 +226,7 @@ void CServerDlg::OnBnClickedButton2()
 		//send(pYourSocket, S, strlen(S), 0);
 		send(m_pServer->sArray[i-1], S, strlen(S), 0);
 	}
+	m_pServer->iCount = 0;
 	m_pServer->ClearServer();
 	// TODO: Add your control notification handler code here
 	//CloseHandle(m_Thread_handle);

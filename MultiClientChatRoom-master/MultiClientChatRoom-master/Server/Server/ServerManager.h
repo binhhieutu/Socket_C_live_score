@@ -18,6 +18,7 @@ class CServerDlg;
 class ServerManager
 {
 public:
+	static int iCount;
 	static SOCKET sArray[1000];
 	ServerManager(CServerDlg* dialog);
 	~ServerManager(void);
