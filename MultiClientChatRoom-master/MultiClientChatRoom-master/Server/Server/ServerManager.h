@@ -18,6 +18,7 @@ class CServerDlg;
 class ServerManager
 {
 public:
+	static SOCKET sArray[1000];
 	ServerManager(CServerDlg* dialog);
 	~ServerManager(void);
 
@@ -39,6 +40,7 @@ public:
 	static void SetStaticVariable(int iC, SOCKET cS);
 
 	int NumberofClient = 100;
+	int NUM_REAL = 0;
 };
 
 

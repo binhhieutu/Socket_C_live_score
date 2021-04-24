@@ -218,6 +218,15 @@ void CServerDlg::OnBnClickedButton1()
 
 void CServerDlg::OnBnClickedButton2()
 {
+	int count = 0;
+	for (int i = 0; i < 1000 ;i++ ) {
+		string mess = "Sever stop the connection !! please try connnection again later!!";
+		char* S = new char[mess.length() + 1];
+		strcpy(S, mess.c_str());
+		//send(pYourSocket, S, strlen(S), 0);
+		send(m_pServer->sArray[i-1], S, strlen(S), 0);
+	}
+	m_pServer->ClearServer();
 	// TODO: Add your control notification handler code here
 	//CloseHandle(m_Thread_handle);
 	////AfxEndThread(0 ,true);
@@ -226,7 +235,7 @@ void CServerDlg::OnBnClickedButton2()
  //   //delete cTh; 
 	////Sleep(1);
 	////m_pServer->ClearServer();
-	//delete m_pServer;
+	delete m_pServer;
 	
 }
 
