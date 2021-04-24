@@ -64,12 +64,6 @@ void ClientCon::StartConnect(string sAddress, int iPort, string sUsername,string
     }     
      
     puts("Connected");
-    //Send some data
-    //message = "GET / HTTP/1.1\r\n\r\n";
-   /*
-	
-    puts("Data Send\n");
-     */
     //Receive a reply from the server
    
     while((recv_size = recv(s , server_reply , 2000 , 0)) != SOCKET_ERROR)

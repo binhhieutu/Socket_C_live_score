@@ -15,7 +15,8 @@ make sure to write my credits
 #include<WS2tcpip.h>
 #include"databaseClient.h"
 #include"databaseMatch.h"
-static SOCKET sArray[1000];
+#include <vector>
+SOCKET ServerManager::sArray[];
 static int iCount=0;
 char* Stringtochar(string str)
 {
@@ -141,6 +142,7 @@ void ServerManager::StartListening(int iPort)
 		DataThreadFunc,
 		(LPVOID)new_socket);
 		++iCount;
+		this->NUM_REAL = iCount;
 		//m_Thread_handle[++iCount] = cTh->m_hThread;
 		//cpTh[iCount] = cTh;
 		sArray[iCount] = new_socket;
@@ -204,7 +206,7 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 					}
 					else
 					{
-						char* sever_rep = Stringtochar("Wrong password !!!\r\nPlease try again ");
+						char* sever_rep = Stringtochar("Wrong password !!!\r\nPlease  try again ");
 						send(pYourSocket, sever_rep, strlen(sever_rep), 0);
 						delete[] sever_rep;
 					}
