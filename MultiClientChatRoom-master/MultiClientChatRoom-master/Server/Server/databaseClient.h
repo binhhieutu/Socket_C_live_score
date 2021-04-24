@@ -48,7 +48,7 @@ static int insertData(const char* s) {
 	char* messageError;
 	int exit = sqlite3_open(s, &DB);
 	string sql("INSERT INTO USER (USER,PASSWORD) VALUES ('TONGTHANH','682001');"
-		"INSERT INTO USER (USER,PASSWORD) VALUES ('PHANMINHIEU','742001');"
+			   "INSERT INTO USER (USER,PASSWORD) VALUES ('PHANMINHIEU','742001');"
 	);
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {
@@ -59,9 +59,6 @@ static int insertData(const char* s) {
 		cout << "Records created Successfully! " << endl;
 	}
 	return 0;
-}
-void Add(vector<client> Clients, client A) {
-
 }
 static int callback1(void* NotUsed, int argc, char** argv, char** azColName) {
 	client A;

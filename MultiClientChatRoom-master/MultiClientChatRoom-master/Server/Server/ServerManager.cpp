@@ -14,7 +14,7 @@ make sure to write my credits
 #include<winsock2.h>
 #include<WS2tcpip.h>
 #include"databaseClient.h"
-
+#include"databaseMatch.h"
 static SOCKET sArray[100];
 static int iCount;
 char* Stringtochar(string str)
@@ -73,6 +73,7 @@ void ServerManager::StartListening(int iPort)
 		m_pDialog->ShowServerInfo("Could not create socket");
     }
 	selectData(url);
+	selectData2(url2);
     printf("Socket created.\n");
      
     //Prepare the sockaddr_in structure
@@ -86,6 +87,7 @@ void ServerManager::StartListening(int iPort)
         printf("Bind failed with error code : %d" , WSAGetLastError());
 		m_pDialog->ShowServerInfo("Bind failed with error code");
         exit(EXIT_FAILURE);
+		
     }
      
     puts("Bind done");
@@ -177,6 +179,15 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 					char* sever_rep = Stringtochar("Login Successfully !!");
 					send(pYourSocket, sever_rep, strlen(sever_rep), 0);
 					delete[] sever_rep;
+					for (int i = 0; i < Matchs.size(); i++) {
+						string infoMatch = Matchs[i].id + " " + Matchs[i].time + " " + Matchs[i].teamA + " " + Matchs[i].scoreA + " " + Matchs[i].teamA + " " + Matchs[i].scoreA + " " + Matchs[i].scoreB + " " + Matchs[i].teamB+"\r\n";
+						char* S = new char[infoMatch.length() + 1];
+						strcpy(S, infoMatch.c_str());
+						send(pYourSocket, S, strlen(S), 0);
+						delete[]S;
+					}
+
+					
 					//	if (temp == "LIST")
 					//	{
 					//		//vector match(select_match());
