@@ -72,7 +72,7 @@ void ServerManager::StartListening(int iPort)
         printf("Could not create socket : %d" , WSAGetLastError());
 		m_pDialog->ShowServerInfo("Could not create socket");
     }
-	selectData(url);
+	//selectData(url);
     printf("Socket created.\n");
      
     //Prepare the sockaddr_in structure
@@ -169,9 +169,8 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 
 			for (int i = user.size()+5; server_reply[i] != '\0'; i++)
 				pass += server_reply[i]; 
-
+			bool flag = check_user_exists(user);
 			if (temp == "LGIN" ){
-				bool flag = check_user_exists(user);
 				if (flag) {
 					if (check_password(pass)) {
 					char* sever_rep = Stringtochar("Login Successfully !!");
@@ -189,6 +188,12 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 					//				senddatatoclient();*/
 					//		}
 					}
+					else
+					{
+						char* sever_rep = Stringtochar("Wrong password !!!\r\nPlease try again ");
+						send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+						delete[] sever_rep;
+					}
 				}
 				else {
 					char* sever_rep = Stringtochar("User Doesn't exists\r\nPlease try again ");
@@ -198,7 +203,19 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 			}
 			else
 				if (temp == "REGS") {
-				//check_user_exists();
+					if (!flag)
+					{
+						insertData_Client(url,user,pass);
+						char* sever_rep = Stringtochar("Register Successfully !!");
+						send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+						delete[] sever_rep;
+					}
+					else
+					{
+						char* sever_rep = Stringtochar("User already exists\r\nPlease try again ");
+						send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+						delete[] sever_rep;
+					}
 				// inset_table_user();
 				}
 		}
