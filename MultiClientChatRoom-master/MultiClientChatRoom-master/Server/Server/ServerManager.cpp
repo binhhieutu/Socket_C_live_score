@@ -56,6 +56,13 @@ void ServerManager::ClearServer()
 
 void ServerManager::StartListening(int iPort)
 {
+	
+    CString num;
+	m_pDialog->GetDlgItemText(IDC_NUM_CLIENT, num);
+	int tmp = _wtoi(num.GetString());
+	if (tmp != 0)
+		this->NumberofClient = tmp;
+
 	iCount=0;
 	printf("\nInitialising Winsock...");
     if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
@@ -102,6 +109,7 @@ void ServerManager::StartListening(int iPort)
      
     while( (new_socket = accept(s , (struct sockaddr *)&client, &c)) != INVALID_SOCKET )
     {
+		
         puts("Connection accepted");
        // m_pDialog->ShowServerInfo("Connection accepted\n");
         //Reply to the client

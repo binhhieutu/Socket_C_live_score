@@ -82,6 +82,7 @@ BEGIN_MESSAGE_MAP(CServerDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CServerDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON1, &CServerDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CServerDlg::OnBnClickedButton2)
+	ON_EN_CHANGE(IDC_NUM_CLIENT, &CServerDlg::OnEnChangeNumClient)
 END_MESSAGE_MAP()
 
 
@@ -271,4 +272,14 @@ UINT CServerDlg::ThreadFunc()
 	m_pServer = new ServerManager(this);
 	m_pServer->StartListening(iPort);
 	return 0;
+}
+
+void CServerDlg::OnEnChangeNumClient()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
 }

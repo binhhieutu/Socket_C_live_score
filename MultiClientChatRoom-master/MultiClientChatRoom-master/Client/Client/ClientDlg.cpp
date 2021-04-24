@@ -90,6 +90,7 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_LISTALL, &CClientDlg::OnBnClickedListall)
 	ON_BN_CLICKED(IDC_LIST_ID, &CClientDlg::OnBnClickedListId)
 	//ON_EN_CHANGE(IDC_EDIT4, &CClientDlg::OnEnChangeEdit4)
+	ON_EN_CHANGE(IDC_EDIT3, &CClientDlg::OnEnChangeEdit3)
 END_MESSAGE_MAP()
 
 
@@ -405,6 +406,17 @@ void CClientDlg::OnBnClickedListId()
 
 
 void CClientDlg::OnEnChangeEdit4()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+}
+
+
+void CClientDlg::OnEnChangeEdit3()
 {
 	// TODO:  If this is a RICHEDIT control, the control will not
 	// send this notification unless you override the CDialogEx::OnInitDialog()
