@@ -219,15 +219,15 @@ void CServerDlg::OnBnClickedButton1()
 void CServerDlg::OnBnClickedButton2()
 {
 	// TODO: Add your control notification handler code here
-	CloseHandle(m_Thread_handle);
-
-	//AfxEndThread(0 ,true);
-	//DWORD dwCode;  
-    //GetExitCodeThread(cTh->m_hThread, &dwCode);  
-    //delete cTh; 
-	//Sleep(1);
-	//m_pServer->ClearServer();
-	delete m_pServer;
+	//CloseHandle(m_Thread_handle);
+	////AfxEndThread(0 ,true);
+	////DWORD dwCode;  
+ //   //GetExitCodeThread(cTh->m_hThread, &dwCode);  
+ //   //delete cTh; 
+	////Sleep(1);
+	////m_pServer->ClearServer();
+	//delete m_pServer;
+	
 }
 
 void CServerDlg::ShowServerInfo(string sValue)
