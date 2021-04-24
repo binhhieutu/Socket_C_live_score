@@ -71,7 +71,7 @@ void ClientCon::StartConnect(string sAddress, int iPort, string sUsername,string
     puts("Data Send\n");
      */
     //Receive a reply from the server
-    Send_user_password_login(sUsername, password);
+   
     while((recv_size = recv(s , server_reply , 2000 , 0)) != SOCKET_ERROR)
     { 
 		puts("Reply received\n");
@@ -100,5 +100,11 @@ void ClientCon::SendData(string sMessage)
 void ClientCon::Send_user_password_login(string user, string pass)
 {
     string tmp = "LGIN" + user + "." + pass;
+    SendData(tmp);
+}
+
+void ClientCon::Send_user_password_REGISTER(string user, string pass)
+{
+    string tmp = "REGS" + user + "." + pass;
     SendData(tmp);
 }

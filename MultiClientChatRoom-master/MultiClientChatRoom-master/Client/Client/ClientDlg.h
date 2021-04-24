@@ -59,4 +59,6 @@ public:
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnEnChangeEdit6();
 	afx_msg void OnEnChangeEdit8();
+	afx_msg void OnBnClickedButtonRegister();
+	afx_msg void OnBnClickedButtonlogin();
 };

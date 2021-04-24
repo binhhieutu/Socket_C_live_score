@@ -37,6 +37,8 @@ public:
 // Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedOk();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
@@ -49,6 +51,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CAboutDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -80,6 +83,8 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON3, &CClientDlg::OnBnClickedButton3)
 	ON_EN_CHANGE(IDC_EDIT6, &CClientDlg::OnEnChangeEdit6)
 	ON_EN_CHANGE(IDC_EDIT8, &CClientDlg::OnEnChangeEdit8)
+	ON_BN_CLICKED(IDC_BUTTON_Register, &CClientDlg::OnBnClickedButtonRegister)
+	ON_BN_CLICKED(IDC_BUTTON_login, &CClientDlg::OnBnClickedButtonlogin)
 END_MESSAGE_MAP()
 
 
@@ -179,9 +184,7 @@ void CClientDlg::OnBnClickedOk()
 void CClientDlg::OnBnClickedButton2()
 {
 	// TODO: Add your control notification handler code here
-	cTh = AfxBeginThread(
-    StaticThreadFunc,
-    this);
+	cTh = AfxBeginThread(StaticThreadFunc,this);
 	
 	//cTh->m_bAutoDelete = FALSE;
 	m_Thread_handle = cTh->m_hThread;
@@ -274,8 +277,12 @@ UINT CClientDlg::ThreadFunc()
 void CClientDlg::OnBnClickedButton3()
 {
 	// TODO: Add your control notification handler code here
-	
-	ShowServerInfo(m_pClient->m_pUser+ " is logged out\n");
+	CString username;
+	GetDlgItemText(IDC_EDIT6, username);
+	CT2CA CStringToAscii2(username);
+	std::string sResultedString2(CStringToAscii2);
+	m_pClient->m_pUser = sResultedString2;
+	ShowServerInfo(m_pClient->m_pUser+ " is logged out\r\n");
 	delete m_pClient;
 }
 
@@ -299,4 +306,51 @@ void CClientDlg::OnEnChangeEdit8()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
+}
+
+
+void CAboutDlg::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+	CDialogEx::OnOK();
+}
+
+
+void CClientDlg::OnBnClickedButtonRegister()
+{
+	// TODO: Add your control notification handler code here
+	CString username;
+	GetDlgItemText(IDC_EDIT6, username);
+
+	CString password;
+	GetDlgItemText(IDC_EDIT8, password);
+
+	CT2CA CStringToAscii2(username);
+
+	std::string sResultedString2(CStringToAscii2);
+
+	CT2CA CStringToAscii3(password);
+	std::string sResultedpass(CStringToAscii3);
+	if (m_pClient != NULL)
+		m_pClient->Send_user_password_REGISTER(sResultedString2, sResultedpass);
+}
+
+
+void CClientDlg::OnBnClickedButtonlogin()
+{
+	// TODO: Add your control notification handler code here
+	CString username;
+	GetDlgItemText(IDC_EDIT6, username);
+
+	CString password;
+	GetDlgItemText(IDC_EDIT8, password);
+
+	CT2CA CStringToAscii2(username);
+
+	std::string sResultedString2(CStringToAscii2);
+
+	CT2CA CStringToAscii3(password);
+	std::string sResultedpass(CStringToAscii3);
+	if (m_pClient != NULL)
+		m_pClient->Send_user_password_login(sResultedString2, sResultedpass);
 }
