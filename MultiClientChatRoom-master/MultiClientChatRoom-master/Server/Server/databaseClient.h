@@ -2,13 +2,14 @@
 #define _dataClient_H_
 #include<iostream>
 #include<stdio.h>
-#include "sqlite3.h"
+#include <sqlite3.h>
 #include<vector>
 using namespace std;
 struct client {
 	string user, password;
 };
-vector<client> Clients;
+ vector<client> Clients;
+ const char*url = "clientdata.db";
 static int createDB(const char* s) {
 	sqlite3* DB;
 	int exit = 0;
@@ -84,4 +85,19 @@ static int selectData(const char* s) {
 	sqlite3_exec(DB, sql.c_str(), callback1, NULL, NULL);
 	return 0;
 }
+bool check_user_exists(string user) {
+	for (int i = 0; i < Clients.size(); i++) {
+		if (Clients[i].user == user)
+			return true;
+	}
+	return false;
+}
+bool check_password(string pass) {
+	for (int i = 0; i < Clients.size(); i++) {
+		if (Clients[i].password == pass)
+			return true;
+	}
+	return false;
+}
+
 #endif // !_dataClient_H_

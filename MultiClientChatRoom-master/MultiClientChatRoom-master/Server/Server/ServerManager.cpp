@@ -13,7 +13,7 @@ make sure to write my credits
 #include <Windows.h>
 #include<winsock2.h>
 #include<WS2tcpip.h>
-#include"databaseCLient.h"
+#include"databaseClient.h"
 
 static SOCKET sArray[100];
 static int iCount;
@@ -72,7 +72,7 @@ void ServerManager::StartListening(int iPort)
         printf("Could not create socket : %d" , WSAGetLastError());
 		m_pDialog->ShowServerInfo("Could not create socket");
     }
- 
+	selectData(url);
     printf("Socket created.\n");
      
     //Prepare the sockaddr_in structure
@@ -138,8 +138,12 @@ void ServerManager::StartListening(int iPort)
         return;
     }
 }
+
+
+
+
 UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
-{
+{	
 	SOCKET pYourSocket = reinterpret_cast<SOCKET>(pParam);
     //UINT retCode = pYourClass->ThreadFunc();
 	//SendReceiveData(pYourClass);
@@ -166,14 +170,13 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 			for (int i = user.size()+5; server_reply[i] != '\0'; i++)
 				pass += server_reply[i]; 
 
-			if (temp == "LGIN") {
-				/*bool flag = check_user_exists();*/
-				if (0) {
-					//if (check_password) {
-					// 
-					/*char* sever_rep = Stringtochar("Login Successfully !!");
+			if (temp == "LGIN" ){
+				bool flag = check_user_exists(user);
+				if (flag) {
+					if (check_password(pass)) {
+					char* sever_rep = Stringtochar("Login Successfully !!");
 					send(pYourSocket, sever_rep, strlen(sever_rep), 0);
-					delete[] sever_rep;*/
+					delete[] sever_rep;
 					//	if (temp == "LIST")
 					//	{
 					//		//vector match(select_match());
@@ -185,7 +188,7 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 					//			for (int i = 0; i < vector....)
 					//				senddatatoclient();*/
 					//		}
-					//}
+					}
 				}
 				else {
 					char* sever_rep = Stringtochar("User Doesn't exists\r\nPlease try again ");
