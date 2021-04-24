@@ -204,7 +204,7 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 					}
 					else
 					{
-						char* sever_rep = Stringtochar("Wrong password !!!\r\nPlease try again ");
+						char* sever_rep = Stringtochar("Wrong password !!!\r\nPlease  try again ");
 						send(pYourSocket, sever_rep, strlen(sever_rep), 0);
 						delete[] sever_rep;
 					}
