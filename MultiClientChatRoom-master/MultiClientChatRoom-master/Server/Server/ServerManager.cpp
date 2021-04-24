@@ -15,8 +15,8 @@ make sure to write my credits
 #include<WS2tcpip.h>
 #include"databaseClient.h"
 #include"databaseMatch.h"
-static SOCKET sArray[100];
-static int iCount;
+static SOCKET sArray[1000];
+static int iCount=0;
 char* Stringtochar(string str)
 {
 
@@ -41,6 +41,8 @@ ServerManager::~ServerManager()
 
 void ServerManager::ClearServer()
 {
+	if (iCount <= 0)
+		return;
 	closesocket(s);
     WSACleanup();
 
@@ -56,6 +58,13 @@ void ServerManager::ClearServer()
 
 void ServerManager::StartListening(int iPort)
 {
+	
+    CString num;
+	m_pDialog->GetDlgItemText(IDC_NUM_CLIENT, num);
+	int tmp = _wtoi(num.GetString());
+	if (tmp != 0)
+		this->NumberofClient = tmp;
+
 	iCount=0;
 	printf("\nInitialising Winsock...");
     if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
@@ -100,8 +109,12 @@ void ServerManager::StartListening(int iPort)
      m_pDialog->ShowServerInfo("Waiting for incoming connections...\r\n");
      c = sizeof(struct sockaddr_in);
      
-    while( (new_socket = accept(s , (struct sockaddr *)&client, &c)) != INVALID_SOCKET )
-    {
+	 while ((new_socket = accept(s, (struct sockaddr*)&client, &c)) != INVALID_SOCKET)
+	 {
+		 if (iCount >= this->NumberofClient) {
+			 m_pDialog->ShowServerInfo("So many connection, new connection won't be allowed !\r\n");
+			 continue; 
+		 }
         puts("Connection accepted");
        // m_pDialog->ShowServerInfo("Connection accepted\n");
         //Reply to the client
@@ -122,6 +135,8 @@ void ServerManager::StartListening(int iPort)
 
 		printf("Peer IP address: %s\n", ipstr);
 		m_pDialog->ShowServerInfo("Connected Peer IP address: "+string(ipstr)+"\r\n");
+		string tmp = "Slot :" + to_string(iCount+1) + "\\" + to_string(this->NumberofClient) + "\r\n";
+		m_pDialog->ShowServerInfo(tmp);
 		CWinThread *cTh = AfxBeginThread(
 		DataThreadFunc,
 		(LPVOID)new_socket);

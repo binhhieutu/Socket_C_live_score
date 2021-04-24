@@ -66,4 +66,5 @@ public:
 	afx_msg void OnBnClickedListall();
 	afx_msg void OnBnClickedListId();
 	afx_msg void OnEnChangeEdit4();
+	afx_msg void OnEnChangeEdit3();
 };

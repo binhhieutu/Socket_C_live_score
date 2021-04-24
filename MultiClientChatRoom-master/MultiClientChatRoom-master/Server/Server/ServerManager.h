@@ -37,6 +37,8 @@ public:
 	HANDLE m_Thread_handle[100];
 	CWinThread *cpTh[100];
 	static void SetStaticVariable(int iC, SOCKET cS);
+
+	int NumberofClient = 100;
 };
 
 
