@@ -20,7 +20,8 @@ class ServerManager
 public:
 	static int iCount;
 	static SOCKET sArray[1000];
-	ServerManager(CServerDlg* dialog);
+	static CServerDlg* m_pDialog;
+	 ServerManager(CServerDlg* dialog);
 	~ServerManager(void);
 
 	void StartListening(int iPort);
@@ -35,7 +36,7 @@ public:
     int c;
     //static int iCount;
 	int iTempCount;
-	CServerDlg* m_pDialog;
+	
 	HANDLE m_Thread_handle[100];
 	CWinThread *cpTh[100];
 	static void SetStaticVariable(int iC, SOCKET cS);

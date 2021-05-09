@@ -18,6 +18,7 @@ make sure to write my credits
 #include <vector>
 SOCKET ServerManager::sArray[];
 int ServerManager::iCount;
+CServerDlg* ServerManager::m_pDialog;
 char* Stringtochar(string str)
 {
 
@@ -268,6 +269,26 @@ UINT __cdecl ServerManager::DataThreadFunc(LPVOID pParam)
 			if (temp == "DISC") {
 				char* sever_rep = Stringtochar("Thank you for using our app, see you later");
 				send(pYourSocket, sever_rep, strlen(sever_rep), 0);
+
+				socklen_t len;
+				struct sockaddr_storage addr;
+				char ipstr[INET6_ADDRSTRLEN];
+				int port;
+
+				len = sizeof addr;
+				getpeername(pYourSocket, (struct sockaddr*)&addr, &len);
+
+				// deal with IPv4:
+				if (addr.ss_family == AF_INET) {
+					struct sockaddr_in* s = (struct sockaddr_in*)&addr;
+					port = ntohs(s->sin_port);
+					inet_ntop(AF_INET, &s->sin_addr, ipstr, sizeof ipstr);
+				}
+				string s_ip(ipstr);
+				m_pDialog->ShowServerInfo(s_ip+" Is Disconnected \r\n\r\n");
+				iCount--;
+				//string tmp = "Slot :" + to_string(iCount) + "\\" + to_string(iCount) + "\r\n";
+				//m_pDialog->ShowServerInfo(tmp);
 				delete[] sever_rep;
 				closesocket(pYourSocket);
 			}
