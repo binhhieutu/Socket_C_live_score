@@ -226,6 +226,7 @@ void CServerDlg::OnBnClickedButton2()
 		//send(pYourSocket, S, strlen(S), 0);
 		send(m_pServer->sArray[i-1], S, strlen(S), 0);
 	}
+	
 	m_pServer->iCount = 0;
 	m_pServer->ClearServer();
 	// TODO: Add your control notification handler code here
@@ -237,6 +238,7 @@ void CServerDlg::OnBnClickedButton2()
 	////Sleep(1);
 	////m_pServer->ClearServer();
 	delete m_pServer;
+	this->ShowServerInfo("All Peer IP have Disconnected\r\n");
 	
 }
 
